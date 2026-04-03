@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { ItemCardComponent } from './components/item-card/item-card.component';
 
 export interface CompareItem {
   id: string;
@@ -13,7 +14,7 @@ export interface CompareItem {
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, FormsModule, CommonModule],
+  imports: [RouterOutlet, FormsModule, CommonModule, ItemCardComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })

@@ -1,0 +1,162 @@
+.item-card {
+  background: rgba(30, 41, 59, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  padding: 1.5rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+
+  &.best-value {
+    background: rgba(16, 185, 129, 0.1);
+    border-color: rgba(16, 185, 129, 0.5);
+    box-shadow: 0 10px 40px rgba(16, 185, 129, 0.15);
+    transform: translateY(-5px);
+
+    .price-per-oz {
+      color: #10b981;
+    }
+  }
+}
+
+.rank-badge {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.2rem 1rem;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  z-index: 10;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  
+  &.rank-1 {
+    background: #10b981;
+  }
+  &.rank-2 {
+    background: #3b82f6;
+  }
+  &.rank-3 {
+    background: #8b5cf6;
+  }
+  &.rank-4, &.rank-5 {
+    background: #f59e0b;
+  }
+  &.most-expensive {
+    background: #ef4444 !important;
+  }
+}
+
+.card-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-top: 0.5rem;
+  position: relative;
+  
+  &.has-badge {
+    padding-top: 1.75rem;
+  }
+
+  .remove-btn {
+    position: absolute;
+    right: -10px;
+    top: -15px;
+    background: none;
+    border: none;
+    color: #64748b;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: color 0.2s;
+
+    &:hover {
+      color: #ef4444;
+    }
+  }
+}
+
+.price-per-oz {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #f1f5f9;
+  text-align: center;
+
+  small {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #94a3b8;
+  }
+
+  .placeholder {
+    font-size: 1.25rem;
+    color: #64748b;
+    font-weight: 500;
+  }
+}
+
+.input-group {
+  margin-bottom: 1.25rem;
+
+  label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #cbd5e1;
+    margin-bottom: 0.5rem;
+  }
+
+  input, select {
+    width: 100%;
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 0.875rem 1rem;
+    color: #f8fafc;
+    font-size: 1rem;
+    transition: border-color 0.2s;
+    outline: none;
+    box-sizing: border-box;
+
+    &:focus {
+      border-color: #38bdf8;
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.1);
+    }
+  }
+}
+
+.input-with-symbol {
+  position: relative;
+
+  .symbol {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94a3b8;
+    font-weight: 500;
+  }
+
+  input {
+    padding-left: 2rem;
+  }
+}
+
+.row-group {
+  display: flex;
+  gap: 1rem;
+
+  .weight-col {
+    flex: 2;
+  }
+  .unit-col {
+    flex: 1;
+  }
+}

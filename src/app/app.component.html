@@ -6,60 +6,15 @@
 
   <div class="items-grid">
     @for (item of items; track item.id; let i = $index) {
-      <div class="item-card" [class.best-value]="getItemRankInfo(item.id)?.rank === 1">
-        @if (getItemRankInfo(item.id); as rankInfo) {
-          <div class="rank-badge" [class]="'rank-' + rankInfo.rank + (rankInfo.isMostExpensive ? ' most-expensive' : '')">
-            {{ getRankText(rankInfo) }}
-          </div>
-        }
-        <div class="card-header" [class.has-badge]="getItemRankInfo(item.id) !== null">
-          <span class="price-per-oz">
-            @if (getPricePerOz(item) !== null) {
-              {{ getPricePerOz(item) | currency:'USD':'symbol':'1.3-3' }} <small>/ oz</small>
-            } @else {
-              <span class="placeholder">Enter details</span>
-            }
-          </span>
-          @if (items.length > 2) {
-            <button class="remove-btn" (click)="removeItem(i)" aria-label="Remove item">&times;</button>
-          }
-        </div>
-
-        <div class="input-group">
-          <label for="price-{{item.id}}">Price</label>
-          <div class="input-with-symbol">
-            <span class="symbol">$</span>
-            <input 
-              type="number" 
-              id="price-{{item.id}}" 
-              [(ngModel)]="item.price" 
-              placeholder="0.00" 
-              min="0" 
-              step="0.01">
-          </div>
-        </div>
-
-        <div class="input-group row-group">
-          <div class="weight-col">
-            <label for="weight-{{item.id}}">Weight or Volume</label>
-            <input 
-              type="number" 
-              id="weight-{{item.id}}" 
-              [(ngModel)]="item.weight" 
-              placeholder="0" 
-              min="0" 
-              step="0.01">
-          </div>
-          <div class="unit-col">
-            <label for="unit-{{item.id}}">Unit</label>
-            <select id="unit-{{item.id}}" [(ngModel)]="item.unit">
-              @for (u of units; track u.label) {
-                <option [value]="u.label">{{ u.label }}</option>
-              }
-            </select>
-          </div>
-        </div>
-      </div>
+      <app-item-card
+        [item]="item"
+        [pricePerOz]="getPricePerOz(item)"
+        [rankInfo]="getItemRankInfo(item.id)"
+        [rankText]="getItemRankInfo(item.id) ? getRankText(getItemRankInfo(item.id)!) : ''"
+        [canRemove]="items.length > 2"
+        [units]="units"
+        (remove)="removeItem(i)">
+      </app-item-card>
     }
   </div>
 
