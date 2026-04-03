@@ -4,6 +4,17 @@
     <p>Find the best value by comparing price per ounce.</p>
   </header>
 
+  <div class="actions">
+    @if (items.length < 6) {
+      <button class="btn-add" (click)="addItem()">
+        <span>+</span> Add Item
+      </button>
+    }
+    <button class="btn-reset" (click)="resetItems()" aria-label="Reset comparison">
+      <span>⟲</span> Reset
+    </button>
+  </div>
+
   <div class="items-grid">
     @for (item of items; track item.id; let i = $index) {
       <app-item-card
@@ -17,13 +28,5 @@
       </app-item-card>
     }
   </div>
-
-  @if (items.length < 6) {
-    <div class="actions">
-      <button class="btn-add" (click)="addItem()">
-        <span>+</span> Add Item
-      </button>
-    </div>
-  }
 </main>
 <router-outlet></router-outlet>

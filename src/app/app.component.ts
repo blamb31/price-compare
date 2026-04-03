@@ -87,6 +87,13 @@ export class AppComponent {
     }
   }
 
+  resetItems() {
+    this.items = [
+      this.createEmptyItem(),
+      this.createEmptyItem()
+    ];
+  }
+
   removeItem(index: number) {
     if (this.items.length > 2) {
       this.items.splice(index, 1);

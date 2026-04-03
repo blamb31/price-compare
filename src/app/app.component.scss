@@ -43,7 +43,39 @@ header {
 .actions {
   display: flex;
   justify-content: center;
-  margin-top: 2rem;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.btn-reset {
+  background: rgba(30, 41, 59, 0.8);
+  color: #94a3b8;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50px;
+  padding: 1rem 1.5rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s;
+  
+  &:hover {
+    color: #f8fafc;
+    background: rgba(71, 85, 105, 0.8);
+    transform: translateY(-2px);
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+
+  &:active {
+    transform: translateY(1px);
+  }
+
+  span {
+    font-size: 1.25rem;
+    line-height: 1;
+  }
 }
 
 .btn-add {
