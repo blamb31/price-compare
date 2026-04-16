@@ -1,24 +1,27 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { SwUpdate, VersionReadyEvent } from '@angular/service-worker';
+import { filter } from 'rxjs';
 import { ItemCardComponent } from './components/item-card/item-card.component';
-
-export interface CompareItem {
-  id: string;
-  price: number | null;
-  weight: number | null;
-  unit: string;
-}
+import { CompareItem } from './models/compare-item.model';
+import { SavedItem } from './models/saved-item.model';
+import { SaveModalComponent } from './components/save-modal/save-modal.component';
+import { SavedItemsComponent } from './components/saved-items/saved-items.component';
+import { SavedItemsService } from './services/saved-items.service';
+import { DuplicateModalComponent } from './components/duplicate-modal/duplicate-modal.component';
+import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal.component';
+import { UpdateModalComponent } from './components/update-modal/update-modal.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, FormsModule, CommonModule, ItemCardComponent],
+  imports: [RouterOutlet, FormsModule, CommonModule, ItemCardComponent, SaveModalComponent, SavedItemsComponent, DuplicateModalComponent, ConfirmModalComponent, UpdateModalComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'Price Compare';
   
   units = [
@@ -30,6 +33,27 @@ export class AppComponent {
     { label: 'ml', factor: 0.033814 }
   ];
 
+  activeTab: 'compare' | 'saved' = 'compare';
+  itemBeingSaved: CompareItem | null = null;
+  duplicateResolutionData: { savedItem: SavedItem, existingItem: SavedItem } | null = null;
+  showResetConfirm: boolean = false;
+  showUpdateModal: boolean = false;
+  
+  constructor(
+    private savedItemsService: SavedItemsService,
+    private swUpdate: SwUpdate
+  ) {
+    if (this.swUpdate.isEnabled) {
+      this.swUpdate.versionUpdates.pipe(
+        filter((evt): evt is VersionReadyEvent => evt.type === 'VERSION_READY')
+      ).subscribe(() => {
+        this.showUpdateModal = true;
+      });
+    }
+  }
+
+  ngOnInit() {}
+
   items: CompareItem[] = [
     this.createEmptyItem(),
     this.createEmptyItem()
@@ -38,6 +62,8 @@ export class AppComponent {
   createEmptyItem(): CompareItem {
     return {
       id: Math.random().toString(36).substring(2, 9),
+      name: '',
+      brand: '',
       price: null,
       weight: null,
       unit: 'oz'
@@ -88,15 +114,99 @@ export class AppComponent {
   }
 
   resetItems() {
-    this.items = [
-      this.createEmptyItem(),
-      this.createEmptyItem()
-    ];
+    // Only prompt if there is data to clear
+    const hasData = this.items.some(item => item.price !== null || item.weight !== null || item.name !== '' || item.brand !== '');
+    if (hasData) {
+      this.showResetConfirm = true;
+    } else {
+      this.doReset();
+    }
+  }
+
+  doReset() {
+    this.items = [this.createEmptyItem(), this.createEmptyItem()];
+    this.showResetConfirm = false;
+  }
+
+  cancelReset() {
+    this.showResetConfirm = false;
   }
 
   removeItem(index: number) {
     if (this.items.length > 2) {
       this.items.splice(index, 1);
     }
+  }
+
+  setTab(tab: 'compare' | 'saved') {
+    this.activeTab = tab;
+  }
+
+  onSaveRequested(item: CompareItem) {
+    this.itemBeingSaved = item;
+  }
+
+  onModalCancel() {
+    this.itemBeingSaved = null;
+  }
+
+  onModalSave(savedItem: SavedItem) {
+    const existing = this.savedItemsService.checkDuplicate(savedItem);
+    
+    if (existing) {
+      this.duplicateResolutionData = { savedItem, existingItem: existing };
+    } else {
+      // not a duplicate, generate new ID so it is distinct from compare pool
+      this.savedItemsService.saveItem({ ...savedItem, id: Math.random().toString(36).substring(2, 9) });
+    }
+
+    this.itemBeingSaved = null;
+  }
+
+  onDuplicateCancel() {
+    this.duplicateResolutionData = null;
+  }
+
+  onDuplicateAdd() {
+    if (this.duplicateResolutionData) {
+      this.savedItemsService.saveItem({ 
+        ...this.duplicateResolutionData.savedItem, 
+        id: Math.random().toString(36).substring(2, 9) 
+      });
+      this.duplicateResolutionData = null;
+    }
+  }
+
+  onDuplicateReplace() {
+    if (this.duplicateResolutionData) {
+      this.savedItemsService.updateItem({ 
+        ...this.duplicateResolutionData.savedItem, 
+        id: this.duplicateResolutionData.existingItem.id 
+      });
+      this.duplicateResolutionData = null;
+    }
+  }
+
+  onCompareSavedItem(savedItem: SavedItem) {
+    this.items = [
+      { 
+        id: Math.random().toString(36).substring(2, 9),
+        name: savedItem.name,
+        brand: savedItem.brand,
+        price: savedItem.price,
+        weight: savedItem.weight,
+        unit: savedItem.unit
+      },
+      this.createEmptyItem()
+    ];
+    this.setTab('compare');
+  }
+
+  tryReload() {
+    window.location.reload();
+  }
+
+  dismissUpdate() {
+    this.showUpdateModal = false;
   }
 }

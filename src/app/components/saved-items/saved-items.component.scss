@@ -1,0 +1,197 @@
+.saved-items-container {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-color);
+  margin-top: 1.5rem;
+
+  .empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--text-secondary);
+    
+    svg {
+      width: 48px;
+      height: 48px;
+      margin-bottom: 1rem;
+      opacity: 0.5;
+    }
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    font-size: 0.95rem;
+
+    th, td {
+      padding: 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    th {
+      font-weight: 600;
+      color: var(--text-secondary);
+      background: rgba(0, 0, 0, 0.2);
+    }
+
+    tr {
+      transition: background 0.2s;
+      
+      &:hover {
+        background: rgba(255, 255, 255, 0.02);
+      }
+    }
+
+    .price-col {
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+
+    .ppo-col {
+      color: var(--accent-primary);
+      font-weight: 600;
+    }
+
+    .brand-col, .date-col {
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+    }
+
+    .actions-col {
+      text-align: right;
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.5rem;
+
+      .remove-btn, .compare-btn {
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        padding: 0.5rem;
+        border-radius: var(--radius-sm);
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .remove-btn {
+        color: #ef4444;
+        &:hover {
+          background: rgba(239, 68, 68, 0.1);
+        }
+      }
+
+      .compare-btn {
+        color: var(--accent-primary);
+        &:hover {
+          background: rgba(56, 189, 248, 0.1);
+        }
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    table, thead, tbody, th, td, tr { 
+      display: block; 
+    }
+    
+    thead { 
+      display: none;
+    }
+    
+    tr { 
+      border: 1px solid var(--border-color); 
+      margin-bottom: 1rem; 
+      border-radius: var(--radius-md); 
+      padding: 0.5rem;
+      background: rgba(15, 23, 42, 0.4);
+    }
+    
+    td { 
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border: none;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.03); 
+      padding: 0.75rem 0.5rem;
+      text-align: right;
+      
+      &:last-child {
+        border-bottom: none;
+        justify-content: flex-end;
+      }
+    }
+    
+    td:before { 
+      font-weight: 600;
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+    }
+
+    td:nth-of-type(1) {
+      justify-content: center;
+      text-align: center;
+      flex-direction: column;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      padding-bottom: 1rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+      &:before {
+        display: none;
+      }
+      
+      .brand-col {
+        display: block;
+        font-size: 0.9rem;
+        font-weight: 500;
+        margin-top: 0.25rem;
+      }
+    }
+
+    td:nth-of-type(2):before { content: "Store"; }
+    td:nth-of-type(3):before { content: "Price/Oz"; }
+    td:nth-of-type(4):before { content: "Amount"; }
+    td:nth-of-type(5):before { content: "Total Price"; }
+    td:nth-of-type(6):before { content: "Date"; }
+    td:nth-of-type(7):before { content: ""; }
+    
+    .actions-col {
+      padding-top: 1rem;
+      display: flex;
+      gap: 0.5rem;
+      
+      .remove-btn, .compare-btn {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        padding: 0.75rem;
+        border-radius: var(--radius-sm);
+        border: none;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      
+      .remove-btn {
+        background: rgba(239, 68, 68, 0.1);
+        color: #ef4444;
+        &:hover {
+          background: rgba(239, 68, 68, 0.2);
+        }
+      }
+
+      .compare-btn {
+        background: rgba(56, 189, 248, 0.1);
+        color: var(--accent-primary);
+        &:hover {
+          background: rgba(56, 189, 248, 0.2);
+        }
+      }
+    }
+  }
+}

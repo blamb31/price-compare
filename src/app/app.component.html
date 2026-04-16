@@ -1,32 +1,77 @@
 <main class="app-container">
   <header>
-    <h1>Price Compare</h1>
-    <p>Find the best value by comparing price per ounce.</p>
+    <div class="header-content">
+      <h1>Price Compare</h1>
+      <p>Find the best value by comparing price per ounce.</p>
+    </div>
+    <div class="tabs">
+      <button class="tab-btn" [class.active]="activeTab === 'compare'" (click)="setTab('compare')">Compare</button>
+      <button class="tab-btn" [class.active]="activeTab === 'saved'" (click)="setTab('saved')">Saved Items</button>
+    </div>
   </header>
 
-  <div class="actions">
-    @if (items.length < 6) {
-      <button class="btn-add" (click)="addItem()">
-        <span>+</span> Add Item
+  @if (activeTab === 'compare') {
+    <div class="actions">
+      @if (items.length < 6) {
+        <button class="btn-add" (click)="addItem()">
+          <span>+</span> Add Item
+        </button>
+      }
+      <button class="btn-reset" (click)="resetItems()" aria-label="Reset comparison">
+        <span>⟲</span> Reset
       </button>
-    }
-    <button class="btn-reset" (click)="resetItems()" aria-label="Reset comparison">
-      <span>⟲</span> Reset
-    </button>
-  </div>
+    </div>
 
-  <div class="items-grid">
-    @for (item of items; track item.id; let i = $index) {
-      <app-item-card
-        [item]="item"
-        [pricePerOz]="getPricePerOz(item)"
-        [rankInfo]="getItemRankInfo(item.id)"
-        [rankText]="getItemRankInfo(item.id) ? getRankText(getItemRankInfo(item.id)!) : ''"
-        [canRemove]="items.length > 2"
-        [units]="units"
-        (remove)="removeItem(i)">
-      </app-item-card>
-    }
-  </div>
+    <div class="items-grid">
+      @for (item of items; track item.id; let i = $index) {
+        <app-item-card
+          [item]="item"
+          [pricePerOz]="getPricePerOz(item)"
+          [rankInfo]="getItemRankInfo(item.id)"
+          [rankText]="getItemRankInfo(item.id) ? getRankText(getItemRankInfo(item.id)!) : ''"
+          [canRemove]="items.length > 2"
+          [units]="units"
+          (remove)="removeItem(i)"
+          (saveRequested)="onSaveRequested($event)">
+        </app-item-card>
+      }
+    </div>
+  }
+
+  @if (activeTab === 'saved') {
+    <app-saved-items (compareItem)="onCompareSavedItem($event)"></app-saved-items>
+  }
 </main>
+
+@if (itemBeingSaved) {
+  <app-save-modal [item]="itemBeingSaved" (save)="onModalSave($event)" (cancel)="onModalCancel()"></app-save-modal>
+}
+
+@if (duplicateResolutionData) {
+  <app-duplicate-modal 
+    [itemName]="duplicateResolutionData.savedItem.name"
+    [storeName]="duplicateResolutionData.savedItem.store"
+    (cancel)="onDuplicateCancel()"
+    (addDuplicate)="onDuplicateAdd()"
+    (replace)="onDuplicateReplace()">
+  </app-duplicate-modal>
+}
+
+@if (showResetConfirm) {
+  <app-confirm-modal
+    title="Reset Comparison"
+    message="Are you sure you want to clear the entire comparison board?"
+    confirmText="Reset"
+    (confirm)="doReset()"
+    (cancel)="cancelReset()">
+  </app-confirm-modal>
+}
+
+@if (showUpdateModal) {
+  <app-update-modal
+    (reload)="tryReload()"
+    (dismiss)="dismissUpdate()">
+  </app-update-modal>
+}
+
 <router-outlet></router-outlet>

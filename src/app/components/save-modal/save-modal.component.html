@@ -1,0 +1,30 @@
+<div class="modal-overlay" (click)="onCancel()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <h2>Save Item</h2>
+    
+    <div class="form-group">
+      <label for="save-name">Name *</label>
+      <input type="text" id="save-name" [(ngModel)]="name" placeholder="e.g. Milk" required>
+    </div>
+
+    <div class="form-group">
+      <label for="save-store">Store *</label>
+      <input type="text" id="save-store" [(ngModel)]="store" placeholder="e.g. Walmart" required>
+    </div>
+
+    <div class="form-group">
+      <label for="save-brand">Brand (Optional)</label>
+      <input type="text" id="save-brand" [(ngModel)]="brand" placeholder="e.g. Great Value">
+    </div>
+
+    <div class="form-group">
+      <label for="save-date">Date</label>
+      <input type="date" id="save-date" [(ngModel)]="date">
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn-cancel" (click)="onCancel()">Cancel</button>
+      <button class="btn-save" (click)="onSave()" [disabled]="!name || !store">Save</button>
+    </div>
+  </div>
+</div>
