@@ -11,7 +11,7 @@
     <p class="prompt">What would you like to do?</p>
 
     <div class="modal-actions">
-      <button class="btn-cancel" (click)="onCancel()">Cancel</button>
+      <button class="btn-cancel" (click)="onCancel()">{{ cancelText }}</button>
       <div class="action-group">
         <button class="btn-duplicate" (click)="onAddDuplicate()">Add Duplicate</button>
         <button class="btn-replace" (click)="onReplace()">Replace Existing</button>

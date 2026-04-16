@@ -19,9 +19,27 @@
   width: 90%;
   max-width: 400px;
   box-shadow: var(--shadow-lg);
-  border: 1px solid rgba(239, 68, 68, 0.3); // Red border hint
+  border: 1px solid var(--border-color);
   text-align: center;
   animation: modalPop 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+  &.danger {
+    border-color: rgba(239, 68, 68, 0.3); // Red border hint
+    .alert-icon { color: #ef4444; }
+    .btn-confirm { 
+      background: #ef4444; color: #fff;
+      &:hover { background: #dc2626; }
+    }
+  }
+
+  &.success {
+    border-color: rgba(34, 197, 94, 0.3); // Green border hint
+    .alert-icon { color: #22c55e; }
+    .btn-confirm { 
+      background: #22c55e; color: #fff;
+      &:hover { background: #16a34a; }
+    }
+  }
 
   .icon-header {
     display: flex;
@@ -29,10 +47,6 @@
     align-items: center;
     gap: 0.5rem;
     margin-bottom: 1rem;
-    
-    .alert-icon {
-      color: #ef4444; // Red 500
-    }
 
     h2 {
       margin: 0;
@@ -72,15 +86,6 @@
         &:hover {
           background: rgba(255, 255, 255, 0.05);
           color: var(--text-primary);
-        }
-      }
-
-      &.btn-confirm {
-        background: #ef4444;
-        color: #fff;
-
-        &:hover {
-          background: #dc2626;
         }
       }
     }

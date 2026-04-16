@@ -1,4 +1,17 @@
 <div class="saved-items-container">
+  <div class="header-actions">
+    <button class="btn-import" (click)="fileInput.click()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+      Upload
+    </button>
+    <input type="file" #fileInput accept=".json" style="display: none" (change)="onFileSelected($event)">
+    
+    <button class="btn-export" (click)="exportAll()" [disabled]="savedItems.length === 0">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+      Download All
+    </button>
+  </div>
+
   @if (savedItems.length === 0) {
     <div class="empty-state">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -42,6 +55,9 @@
             <td class="price-col">{{ item.price | currency }}</td>
             <td class="date-col">{{ item.date | date:'shortDate' }}</td>
             <td class="actions-col">
+              <button class="export-btn" (click)="exportItem(item)" title="Download item">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+              </button>
               <button class="compare-btn" (click)="onCompare(item)" title="Compare item">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5"></path><path d="M4 20L21 3"></path><path d="M21 16v5h-5"></path><path d="M15 15l6 6"></path><path d="M4 4l5 5"></path></svg>
               </button>
@@ -62,5 +78,34 @@
     [message]="'Are you sure you want to delete <strong>' + itemToDelete.name + '</strong>?'"
     (confirm)="confirmDelete()"
     (cancel)="cancelDelete()">
+  </app-confirm-modal>
+}
+
+@if (isImporting && !duplicateResolutionData) {
+  <app-import-progress-modal 
+    [current]="importCurrent" 
+    [total]="importTotal">
+  </app-import-progress-modal>
+}
+
+@if (duplicateResolutionData) {
+  <app-duplicate-modal 
+    [itemName]="duplicateResolutionData.importedItem.name"
+    [storeName]="duplicateResolutionData.importedItem.store"
+    cancelText="Skip"
+    (cancel)="onDuplicateCancel()"
+    (addDuplicate)="onDuplicateAdd()"
+    (replace)="onDuplicateReplace()">
+  </app-duplicate-modal>
+}
+
+@if (importSummary) {
+  <app-confirm-modal
+    title="Import Summary"
+    [message]="importSummary"
+    confirmText="OK"
+    theme="success"
+    [hideCancel]="true"
+    (confirm)="closeImportSummary()">
   </app-confirm-modal>
 }

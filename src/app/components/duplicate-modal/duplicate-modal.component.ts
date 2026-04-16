@@ -11,6 +11,7 @@ import { CommonModule } from '@angular/common';
 export class DuplicateModalComponent {
   @Input() itemName: string = '';
   @Input() storeName: string = '';
+  @Input() cancelText: string = 'Cancel';
   
   @Output() cancel = new EventEmitter<void>();
   @Output() addDuplicate = new EventEmitter<void>();

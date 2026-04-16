@@ -48,4 +48,16 @@ export class SavedItemsService {
   private saveToStorage(items: SavedItem[]): void {
     localStorage.setItem(this.STORAGE_KEY, JSON.stringify(items));
   }
+
+  exportData(items: SavedItem[], filename: string = 'price-compare-export.json'): void {
+    const dataStr = JSON.stringify(items, null, 2);
+    const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+    
+    let linkElement = document.createElement('a');
+    linkElement.setAttribute('href', dataUri);
+    linkElement.setAttribute('download', filename);
+    document.body.appendChild(linkElement);
+    linkElement.click();
+    linkElement.remove();
+  }
 }

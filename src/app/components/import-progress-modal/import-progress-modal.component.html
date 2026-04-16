@@ -1,0 +1,14 @@
+<div class="modal-overlay">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <h2>Importing Items</h2>
+    <p class="description">Processing your items... Please wait.</p>
+    
+    <div class="progress-stats">
+      <span>{{ current }} of {{ total }}</span>
+    </div>
+
+    <div class="progress-bar-container">
+      <div class="progress-bar-fill" [style.width.%]="total === 0 ? 0 : (current / total) * 100"></div>
+    </div>
+  </div>
+</div>
