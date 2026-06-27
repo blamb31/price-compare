@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SavedItemsService } from '../../services/saved-items.service';
 import { SavedItem } from '../../models/saved-item.model';
@@ -14,6 +14,7 @@ import { ImportProgressModalComponent } from '../import-progress-modal/import-pr
   styleUrl: './saved-items.component.scss'
 })
 export class SavedItemsComponent implements OnInit {
+  @Input() calculationUnit: string = 'oz';
   @Output() compareItem = new EventEmitter<SavedItem>();
   savedItems: SavedItem[] = [];
   itemToDelete: SavedItem | null = null;
@@ -154,7 +155,7 @@ export class SavedItemsComponent implements OnInit {
     this.compareItem.emit(item);
   }
   
-  getPricePerOz(item: SavedItem): number | null {
+  getPricePerUnit(item: SavedItem): number | null {
     if (!item.price || !item.weight || item.price <= 0 || item.weight <= 0) {
       return null;
     }
@@ -165,11 +166,18 @@ export class SavedItemsComponent implements OnInit {
       { label: 'g', factor: 0.035274 },
       { label: 'kg', factor: 35.274 },
       { label: 'fl oz', factor: 1 },
-      { label: 'ml', factor: 0.033814 }
+      { label: 'ml', factor: 0.033814 },
+      { label: 'Unit', factor: 1 }
     ];
     const unitMatch = units.find(u => u.label === item.unit);
     const multiplier = unitMatch ? unitMatch.factor : 1;
-    const totalOz = item.weight * multiplier;
-    return item.price / totalOz;
+    const totalBase = item.weight * multiplier;
+
+    const targetMatch = units.find(u => u.label === this.calculationUnit);
+    const targetFactor = targetMatch ? targetMatch.factor : 1;
+    const totalTarget = totalBase / targetFactor;
+
+    if (totalTarget <= 0) return null;
+    return item.price / totalTarget;
   }
 }

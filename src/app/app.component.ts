@@ -30,10 +30,12 @@ export class AppComponent implements OnInit {
     { label: 'g', factor: 0.035274 },
     { label: 'kg', factor: 35.274 },
     { label: 'fl oz', factor: 1 },
-    { label: 'ml', factor: 0.033814 }
+    { label: 'ml', factor: 0.033814 },
+    { label: 'Unit', factor: 1 }
   ];
 
   activeTab: 'compare' | 'saved' = 'compare';
+  calculationUnit: string = 'oz';
   itemBeingSaved: CompareItem | null = null;
   duplicateResolutionData: { savedItem: SavedItem, existingItem: SavedItem } | null = null;
   showResetConfirm: boolean = false;
@@ -70,21 +72,31 @@ export class AppComponent implements OnInit {
     };
   }
 
-  getPricePerOz(item: CompareItem): number | null {
+  getPricePerUnit(item: CompareItem): number | null {
     if (!item.price || !item.weight || item.price <= 0 || item.weight <= 0) {
       return null;
     }
     const unitMatch = this.units.find(u => u.label === item.unit);
     const multiplier = unitMatch ? unitMatch.factor : 1;
-    const totalOz = item.weight * multiplier;
-    return item.price / totalOz;
+    const totalBase = item.weight * multiplier;
+
+    const targetMatch = this.units.find(u => u.label === this.calculationUnit);
+    const targetFactor = targetMatch ? targetMatch.factor : 1;
+    const totalTarget = totalBase / targetFactor;
+
+    if (totalTarget <= 0) return null;
+    return item.price / totalTarget;
+  }
+
+  get calculationUnitSingular(): string {
+    return this.calculationUnit.toLowerCase();
   }
 
   get rankedItemIds(): string[] {
     return this.items
-      .map(item => ({ id: item.id, pricePerOz: this.getPricePerOz(item) }))
-      .filter(item => item.pricePerOz !== null)
-      .sort((a, b) => a.pricePerOz! - b.pricePerOz!)
+      .map(item => ({ id: item.id, pricePerUnit: this.getPricePerUnit(item) }))
+      .filter(item => item.pricePerUnit !== null)
+      .sort((a, b) => a.pricePerUnit! - b.pricePerUnit!)
       .map(item => item.id);
   }
 

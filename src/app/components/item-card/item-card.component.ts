@@ -18,11 +18,12 @@ export interface RankInfo {
 })
 export class ItemCardComponent implements AfterViewInit {
   @Input({ required: true }) item!: CompareItem;
-  @Input() pricePerOz: number | null = null;
+  @Input() pricePerUnit: number | null = null;
   @Input() rankInfo: RankInfo | null = null;
   @Input() rankText: string = '';
   @Input() canRemove: boolean = false;
   @Input() units: { label: string, factor: number }[] = [];
+  @Input() calculationUnit: string = 'oz';
 
   @Output() remove = new EventEmitter<void>();
   @Output() saveRequested = new EventEmitter<CompareItem>();

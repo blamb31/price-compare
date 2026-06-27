@@ -2,13 +2,26 @@
   <header>
     <div class="header-content">
       <h1>Price Compare</h1>
-      <p>Find the best value by comparing price per ounce.</p>
+      <p>Find the best value by comparing price per {{ calculationUnitSingular }}.</p>
     </div>
     <div class="tabs">
       <button class="tab-btn" [class.active]="activeTab === 'compare'" (click)="setTab('compare')">Compare</button>
       <button class="tab-btn" [class.active]="activeTab === 'saved'" (click)="setTab('saved')">Saved Items</button>
     </div>
   </header>
+
+  <div class="settings-bar">
+    <div class="calculation-settings">
+      <label for="calc-unit-select">Compare price per:</label>
+      <div class="select-wrapper">
+        <select id="calc-unit-select" [(ngModel)]="calculationUnit">
+          @for (u of units; track u.label) {
+            <option [value]="u.label">{{ u.label }}</option>
+          }
+        </select>
+      </div>
+    </div>
+  </div>
 
   @if (activeTab === 'compare') {
     <div class="actions">
@@ -26,11 +39,12 @@
       @for (item of items; track item.id; let i = $index) {
         <app-item-card
           [item]="item"
-          [pricePerOz]="getPricePerOz(item)"
+          [pricePerUnit]="getPricePerUnit(item)"
           [rankInfo]="getItemRankInfo(item.id)"
           [rankText]="getItemRankInfo(item.id) ? getRankText(getItemRankInfo(item.id)!) : ''"
           [canRemove]="items.length > 2"
           [units]="units"
+          [calculationUnit]="calculationUnit"
           (remove)="removeItem(i)"
           (saveRequested)="onSaveRequested($event)">
         </app-item-card>
@@ -39,7 +53,7 @@
   }
 
   @if (activeTab === 'saved') {
-    <app-saved-items (compareItem)="onCompareSavedItem($event)"></app-saved-items>
+    <app-saved-items [calculationUnit]="calculationUnit" (compareItem)="onCompareSavedItem($event)"></app-saved-items>
   }
 </main>
 

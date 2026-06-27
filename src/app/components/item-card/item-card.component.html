@@ -6,8 +6,8 @@
   }
   <div class="card-header" [class.has-badge]="rankInfo !== null">
     <span class="price-per-oz">
-      @if (pricePerOz !== null) {
-        {{ pricePerOz | currency:'USD':'symbol': (pricePerOz < 1 ? '1.3-3' : '1.2-2') }} <small>/ oz</small>
+      @if (pricePerUnit !== null) {
+        {{ pricePerUnit | currency:'USD':'symbol': (pricePerUnit < 1 ? '1.3-3' : '1.2-2') }} <small>/ {{ calculationUnit }}</small>
       } @else {
         <span class="placeholder">-</span>
       }
