@@ -1,6 +1,6 @@
 {
   "name": "price-compare",
-  "version": "0.2.18",
+  "version": "0.2.19",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -33,6 +33,7 @@
     "@angular-devkit/build-angular": "^17.3.8",
     "@angular/cli": "^17.3.8",
     "@angular/compiler-cli": "^17.3.0",
+    "@capacitor/assets": "^3.0.5",
     "@capacitor/cli": "^6.2.1",
     "@types/jasmine": "~5.1.0",
     "jasmine-core": "~5.1.0",
