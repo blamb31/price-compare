@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Price Compare</string>
+    <string name="title_activity_main">Price Compare</string>
+    <string name="package_name">price_compare.myapp</string>
+    <string name="custom_url_scheme">price_compare.myapp</string>
+</resources>

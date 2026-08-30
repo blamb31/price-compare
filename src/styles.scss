@@ -1,4 +1,19 @@
-/* You can add global styles to this file, and also import other style files */
+/* Core CSS required for Ionic components to work properly */
+@import "@ionic/angular/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+@import "@ionic/angular/css/normalize.css";
+@import "@ionic/angular/css/structure.css";
+@import "@ionic/angular/css/typography.css";
+@import "@ionic/angular/css/display.css";
+
+/* Optional CSS utils */
+@import "@ionic/angular/css/padding.css";
+@import "@ionic/angular/css/float-elements.css";
+@import "@ionic/angular/css/text-alignment.css";
+@import "@ionic/angular/css/text-transformation.css";
+@import "@ionic/angular/css/flex-utils.css";
+
 :root {
   --bg-card: rgba(30, 41, 59, 0.7);
   --bg-input: rgba(15, 23, 42, 0.6);
@@ -20,4 +35,9 @@
 body {
   margin: 0;
   padding: 0;
+}
+
+ion-content {
+  --background: #0f172a !important;
+  --color: #f8fafc !important;
 }

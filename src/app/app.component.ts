@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { SwUpdate, VersionReadyEvent } from '@angular/service-worker';
 import { filter } from 'rxjs';
+import { IonApp, IonContent } from '@ionic/angular/standalone';
 import { ItemCardComponent } from './components/item-card/item-card.component';
 import { CompareItem } from './models/compare-item.model';
 import { SavedItem } from './models/saved-item.model';
@@ -17,7 +18,7 @@ import { UpdateModalComponent } from './components/update-modal/update-modal.com
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, FormsModule, CommonModule, ItemCardComponent, SaveModalComponent, SavedItemsComponent, DuplicateModalComponent, ConfirmModalComponent, UpdateModalComponent],
+  imports: [RouterOutlet, FormsModule, CommonModule, IonApp, IonContent, ItemCardComponent, SaveModalComponent, SavedItemsComponent, DuplicateModalComponent, ConfirmModalComponent, UpdateModalComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
