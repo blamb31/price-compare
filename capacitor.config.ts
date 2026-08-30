@@ -1,7 +1,7 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'price_compare.myapp',
+  appId: 'com.blakelamb.price_compare',
   appName: 'Price Compare',
   webDir: 'dist/price-compare/browser',
   server: {

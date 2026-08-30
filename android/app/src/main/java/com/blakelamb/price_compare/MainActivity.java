@@ -1,4 +1,4 @@
-package price_compare.myapp;
+package com.blakelamb.price_compare;
 
 import com.getcapacitor.BridgeActivity;
 

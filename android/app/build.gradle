@@ -1,10 +1,10 @@
 apply plugin: 'com.android.application'
 
 android {
-    namespace "price_compare.myapp"
+    namespace "com.blakelamb.price_compare"
     compileSdk rootProject.ext.compileSdkVersion
     defaultConfig {
-        applicationId "price_compare.myapp"
+        applicationId "com.blakelamb.price_compare"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode System.getenv("VERSION_CODE") ? System.getenv("VERSION_CODE").toInteger() : 216
