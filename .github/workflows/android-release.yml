@@ -59,6 +59,9 @@ jobs:
           echo "$ANDROID_KEYSTORE_BASE64" | base64 --decode > android/app/release.keystore
 
       - name: Build Android App Bundle
+        env:
+          VERSION_CODE: ${{ github.run_number + 215 }}
+          VERSION_NAME: 0.2.${{ github.run_number + 15 }}
         run: |
           cd android
           ./gradlew bundleRelease

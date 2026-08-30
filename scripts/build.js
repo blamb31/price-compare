@@ -62,32 +62,13 @@ try {
   fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2) + '\n', 'utf8');
   console.log(`Package.json version bumped: ${oldVersion} -> ${newVersion}`);
 
-  // 2. Read and bump android/app/build.gradle versionCode and versionName
-  console.log('Reading android/app/build.gradle...');
-  let gradleContent = fs.readFileSync(gradlePath, 'utf8');
+  // 2. Setup dynamic environment variables for Android build
+  // Calculate versionCode based on newVersion (e.g. "0.2.16" -> major*10000 + minor*100 + patch = 216)
+  const versionCode = versionParts[0] * 10000 + versionParts[1] * 100 + versionParts[2];
 
-  // Find and bump versionCode
-  const versionCodeRegex = /(versionCode\s+)(\d+)/;
-  const versionCodeMatch = gradleContent.match(versionCodeRegex);
-  if (!versionCodeMatch) {
-    throw new Error('Could not find versionCode in build.gradle');
-  }
-  const oldVersionCode = parseInt(versionCodeMatch[2], 10);
-  const newVersionCode = oldVersionCode + 1;
-  gradleContent = gradleContent.replace(versionCodeRegex, `$1${newVersionCode}`);
-  console.log(`VersionCode bumped: ${oldVersionCode} -> ${newVersionCode}`);
-
-  // Find and update versionName
-  const versionNameRegex = /(versionName\s+)"([^"]+)"/;
-  const versionNameMatch = gradleContent.match(versionNameRegex);
-  if (!versionNameMatch) {
-    throw new Error('Could not find versionName in build.gradle');
-  }
-  gradleContent = gradleContent.replace(versionNameRegex, `$1"${newVersion}"`);
-  console.log(`VersionName updated: "${versionNameMatch[2]}" -> "${newVersion}"`);
-
-  fs.writeFileSync(gradlePath, gradleContent, 'utf8');
-  console.log('build.gradle updated successfully.');
+  process.env.VERSION_CODE = versionCode.toString();
+  process.env.VERSION_NAME = newVersion;
+  console.log(`Configured build environment: VERSION_CODE=${process.env.VERSION_CODE}, VERSION_NAME=${process.env.VERSION_NAME}`);
 
   // 3. Build Angular web assets
   console.log('Building Angular web assets (npm run build)...');

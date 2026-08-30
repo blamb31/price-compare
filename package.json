@@ -1,6 +1,6 @@
 {
   "name": "price-compare",
-  "version": "0.0.1",
+  "version": "0.2.16",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
